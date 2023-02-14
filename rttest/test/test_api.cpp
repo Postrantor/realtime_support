@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <sys/resource.h>
 #include <string>
+#include <sys/resource.h>
 
-#include <array>
 #include "gtest/gtest.h"
+#include <array>
 
 #include "rttest/rttest.h"
 #include "rttest/utils.hpp"
@@ -32,18 +32,15 @@ void * test_callback(void * args)
 }
 
 // check that arguments are read from the commandline and accessed via get_params
-TEST(TestApi, read_args_get_params) {
+TEST(TestApi, read_args_get_params)
+{
   int argc = 15;
   char * argv[] = {
-    const_cast<char *>("test_data"),
-    const_cast<char *>("-i"), const_cast<char *>("4321"),
-    const_cast<char *>("-u"), const_cast<char *>("50us"),
-    const_cast<char *>("-t"), const_cast<char *>("42"),
-    const_cast<char *>("-s"), const_cast<char *>("fifo"),
-    const_cast<char *>("-m"), const_cast<char *>("100kb"),
-    const_cast<char *>("-d"), const_cast<char *>("100kb"),
-    const_cast<char *>("-f"), const_cast<char *>("foo.txt")
-  };
+    const_cast<char *>("test_data"), const_cast<char *>("-i"),    const_cast<char *>("4321"),
+    const_cast<char *>("-u"),        const_cast<char *>("50us"),  const_cast<char *>("-t"),
+    const_cast<char *>("42"),        const_cast<char *>("-s"),    const_cast<char *>("fifo"),
+    const_cast<char *>("-m"),        const_cast<char *>("100kb"), const_cast<char *>("-d"),
+    const_cast<char *>("100kb"),     const_cast<char *>("-f"),    const_cast<char *>("foo.txt")};
   EXPECT_EQ(0, rttest_read_args(argc, argv));
   struct rttest_params params;
   EXPECT_EQ(-1, rttest_get_params(NULL));
@@ -60,7 +57,8 @@ TEST(TestApi, read_args_get_params) {
   EXPECT_EQ(0, rttest_finish());
 }
 
-TEST(TestApi, read_args_update_period_over_32bit) {
+TEST(TestApi, read_args_update_period_over_32bit)
+{
   // 4294967305 equals "static_cast<uint64_t>(UINT32_MAX) + 10"
   // but avoid calculation to keep test simple
   uint64_t update_period = 4294967305;
@@ -71,7 +69,8 @@ TEST(TestApi, read_args_update_period_over_32bit) {
   int argc = 3;
   char * argv[] = {
     const_cast<char *>("test_data"),
-    const_cast<char *>("-u"), const_cast<char *>(update_period_str.c_str()),
+    const_cast<char *>("-u"),
+    const_cast<char *>(update_period_str.c_str()),
   };
 
   EXPECT_EQ(0, rttest_read_args(argc, argv));
@@ -82,7 +81,8 @@ TEST(TestApi, read_args_update_period_over_32bit) {
   EXPECT_EQ(0, rttest_finish());
 }
 
-TEST(TestApi, init) {
+TEST(TestApi, init)
+{
   struct timespec update_period;
   update_period.tv_sec = 123;
   update_period.tv_nsec = 456;
@@ -91,8 +91,8 @@ TEST(TestApi, init) {
 
   EXPECT_EQ(
     0, rttest_init(
-      4321, update_period, SCHED_FIFO, 42, stack_size,
-      prefault_dynamic_size, const_cast<char *>("foo.txt")));
+         4321, update_period, SCHED_FIFO, 42, stack_size, prefault_dynamic_size,
+         const_cast<char *>("foo.txt")));
   struct rttest_params params;
   EXPECT_EQ(0, rttest_get_params(&params));
 
@@ -108,7 +108,8 @@ TEST(TestApi, init) {
   EXPECT_EQ(0, rttest_finish());
 }
 
-TEST(TestApi, spin_once) {
+TEST(TestApi, spin_once)
+{
   // initialize with all default arguments
   struct timespec update_period;
   update_period.tv_sec = 0;
@@ -127,7 +128,8 @@ TEST(TestApi, spin_once) {
   EXPECT_EQ(0, rttest_finish());
 }
 
-TEST(TestApi, spin) {
+TEST(TestApi, spin)
+{
   struct timespec update_period;
   update_period.tv_sec = 0;
   update_period.tv_nsec = 1000000;
@@ -139,7 +141,8 @@ TEST(TestApi, spin) {
   EXPECT_EQ(0, rttest_finish());
 }
 
-TEST(TestApi, get_statistics) {
+TEST(TestApi, get_statistics)
+{
   struct rusage usage;
   size_t initial_min_pgflts;
   size_t initial_maj_pgflts;
@@ -177,7 +180,8 @@ TEST(TestApi, get_statistics) {
   EXPECT_EQ(0, rttest_finish());
 }
 
-TEST(TestApi, running) {
+TEST(TestApi, running)
+{
   struct timespec update_period, start_time;
   clock_gettime(CLOCK_MONOTONIC, &start_time);
   update_period.tv_sec = 0;
@@ -193,7 +197,8 @@ TEST(TestApi, running) {
   EXPECT_EQ(0, rttest_running());
 }
 
-TEST(TestApi, timespec_to_uint64) {
+TEST(TestApi, timespec_to_uint64)
+{
   // failed values in 32bit OS (#94)
   struct timespec t;
   t.tv_sec = 363464;

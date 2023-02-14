@@ -20,30 +20,31 @@
 #include <numeric>
 #include <vector>
 
-template<typename container>
+// 计算给定容器中元素的标准差 (Calculate the standard deviation of elements in a given container)
+template <typename container>
 double calculate_stddev(const container & vec)
 {
-  double n = vec.size();
-  double mean = std::accumulate(
-    vec.begin(),
-    vec.end(), 0.0) / n;
+  double n = vec.size();  // 获取容器大小 (Get the size of the container)
+
+  // 计算平均值 (Calculate the mean)
+  double mean = std::accumulate(vec.begin(), vec.end(), 0.0) / n;
 
   std::vector<double> diff(n);
+  
+  // 计算每个元素与平均值的差值 (Calculate the difference between each element and the mean)
   std::transform(
-    vec.begin(), vec.end(), diff.begin(),
-    [mean](auto x) -> double {return x - mean;});
+    vec.begin(), vec.end(), diff.begin(), [mean](auto x) -> double { return x - mean; });
 
-  // first divide by sqrt(n)
+  // 首先除以 sqrt(n) (First divide by sqrt(n))
   std::vector<double> div(n);
   std::transform(
-    diff.begin(), diff.end(), div.begin(),
-    [n](auto x) -> double {return x / std::sqrt(n);});
+    diff.begin(), diff.end(), div.begin(), [n](auto x) -> double { return x / std::sqrt(n); });
 
-  // inner_product
-  double sq_sum = std::inner_product(
-    div.begin(), div.end(), div.begin(), 0.0);
+  // 求内积 (Calculate the inner product)
+  double sq_sum = std::inner_product(div.begin(), div.end(), div.begin(), 0.0);
 
+  // 返回标准差 (Return the standard deviation)
   return std::sqrt(sq_sum);
 }
 
-#endif  // RTTEST__MATH_UTILS_HPP_
+#endif // RTTEST__MATH_UTILS_HPP_

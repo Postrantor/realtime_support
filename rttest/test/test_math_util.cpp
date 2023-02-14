@@ -14,33 +14,45 @@
 
 #include <vector>
 
-#include "gtest/gtest.h"
 #include "rttest/math_utils.hpp"
+#include "gtest/gtest.h"
 
-TEST(MathUtils, calculate_stddev) {
+/**
+ * @brief 计算标准差的测试 (Test for calculating standard deviation)
+ *
+ * @param[in] MathUtils 测试用例名称 (Name of the test case)
+ * @param[in] calculate_stddev 测试方法名称 (Name of the test method)
+ */
+TEST(MathUtils, calculate_stddev)
+{
+  // 创建一个整数向量 (Create an integer vector)
   std::vector<uint64_t> v_int = {1, 2, 3, 4};
+
+  // 使用 EXPECT_NEAR 检查计算结果与预期值的接近程度 (Check the closeness between the calculated result and the expected value using EXPECT_NEAR)
   EXPECT_NEAR(1.118, calculate_stddev(v_int), 0.001);
 
+  // 创建一个双精度浮点数向量 (Create a double precision floating point number vector)
   std::vector<double> v_double = {1.1, 2.2, 3.3, 4.9};
+
+  // 使用 EXPECT_NEAR 检查计算结果与预期值的接近程度 (Check the closeness between the calculated result and the expected value using EXPECT_NEAR)
   EXPECT_NEAR(1.404, calculate_stddev(v_double), 0.001);
 
   // #95
   // example_loop shows
   // Standard deviation: 2594.930828
   // but numpy.std says 36581.054213911055.
+  // 创建一个失败的整数向量示例 (Create a failed integer vector example)
   std::vector<uint64_t> v_failed = {
-    58184, 18661, 83459, 80252, 80355, 16540, 80091, 79467,
-    80551, 19769, 95537, 46263, 37242, 17908, 17411, 15006,
-    14815, 14725, 15595, 15115, 16292, 22865, 36376, 36681,
-    36564, 22203, 42201, 36765, 58167, 27846, 19891, 17952,
-    18629, 18075, 20265, 19984, 18502, 18918, 18027, 44307,
-    43990, 28412, 45483, 45293, 43955, 54190, 103671, 100835,
-    100665, 25228, 101552, 103844, 102738, 25395, 97951, 103043,
-    100565, 52475, 100227, 102139, 100906, 25417, 99640, 98187,
-    101581, 25608, 100494, 107581, 103422, 25416, 102073, 100450,
-    101185, 25779, 102311, 99956, 101441, 25473, 102454, 100402,
-    100403, 25335, 103525, 100091, 104371, 25156, 100897, 103183,
-    99581, 25203, 100824, 99812, 106011, 29428, 103198, 102470,
-    99901, 25536, 100327, 100932};
+    58184,  18661, 83459,  80252,  80355,  16540, 80091,  79467,  80551,  19769, 95537,  46263,
+    37242,  17908, 17411,  15006,  14815,  14725, 15595,  15115,  16292,  22865, 36376,  36681,
+    36564,  22203, 42201,  36765,  58167,  27846, 19891,  17952,  18629,  18075, 20265,  19984,
+    18502,  18918, 18027,  44307,  43990,  28412, 45483,  45293,  43955,  54190, 103671, 100835,
+    100665, 25228, 101552, 103844, 102738, 25395, 97951,  103043, 100565, 52475, 100227, 102139,
+    100906, 25417, 99640,  98187,  101581, 25608, 100494, 107581, 103422, 25416, 102073, 100450,
+    101185, 25779, 102311, 99956,  101441, 25473, 102454, 100402, 100403, 25335, 103525, 100091,
+    104371, 25156, 100897, 103183, 99581,  25203, 100824, 99812,  106011, 29428, 103198, 102470,
+    99901,  25536, 100327, 100932};
+
+  // 使用 EXPECT_NEAR 检查计算结果与预期值的接近程度 (Check the closeness between the calculated result and the expected value using EXPECT_NEAR)
   EXPECT_NEAR(36581.05, calculate_stddev(v_failed), 0.01);
 }
